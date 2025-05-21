@@ -17,6 +17,9 @@ public:
     ~Board();
 
     const vector<vector<char>>& getdata() const;
+    vector<pair<int, int>> getEmptyCells() const;
+    vector<vector<char>> getBoardSnapshot() const;
+
     char getCell(int r, int cl) const;
 
     void setdata(int r, int cl, char c);

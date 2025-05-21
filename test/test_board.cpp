@@ -1,75 +1,106 @@
-#include <iostream>
+#include "gtest/gtest.h"
 #include "../include/Board.hpp"
 
-using namespace std;
-
-void test_initialization() {
+TEST(BoardTest, InitializationCreatesEmptyBoard) {
     Board b(3, 3);
-    cout << "[T] Board initialized to 3x3" << endl;
+    EXPECT_EQ(b.getRowCount(), 3);
+    EXPECT_EQ(b.getColCount(), 3);
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j)
+            EXPECT_TRUE(b.isCellEmpty(i, j));
 }
 
-void test_set_and_get() {
+TEST(BoardTest, SetAndGetData) {
     Board b(3, 3);
     b.setdata(1, 1, 'X');
-    char val = b.getCell(1, 1);
-    if (val == 'X')
-        cout << "[T] Set and Get Cell works correctly" << endl;
-    else
-        cout << "[F] Set or Get failed" << endl;
+    EXPECT_EQ(b.getCell(1, 1), 'X');
+    EXPECT_FALSE(b.isCellEmpty(1, 1));
 }
 
-void test_isCellEmpty() {
+TEST(BoardTest, SetDataInvalidPositionThrows) {
     Board b(3, 3);
-    if (b.isCellEmpty(0, 0))
-        cout << "[T] Empty cell recognized" << endl;
-    b.setdata(0, 0, 'O');
-    if (!b.isCellEmpty(0, 0))
-        cout << "[T] Occupied cell recognized" << endl;
-    else
-        cout << "[F] Cell state not updated correctly" << endl;
+    EXPECT_THROW(b.setdata(-1, 0, 'X'), invalid_argument);
+    EXPECT_THROW(b.setdata(0, 3, 'O'), invalid_argument);
+    EXPECT_THROW(b.setdata(0, 0, 'Z'), invalid_argument);
 }
 
-void test_isFull() {
+TEST(BoardTest, GetCellInvalidThrows) {
+    Board b(3, 3);
+    EXPECT_THROW(b.getCell(10, 10), invalid_argument);
+}
+
+TEST(BoardTest, IsCellEmptyCheck) {
+    Board b(2, 2);
+    b.setdata(0, 1, 'X');
+    EXPECT_TRUE(b.isCellEmpty(0, 0));
+    EXPECT_FALSE(b.isCellEmpty(0, 1));
+}
+
+TEST(BoardTest, GetEmptyCellsReturnsCorrectPositions) {
+    Board b(2, 2);
+    b.setdata(0, 0, 'X');
+    b.setdata(1, 1, 'O');
+
+    vector<pair<int, int>> expected = {{0, 1}, {1, 0}};
+    vector<pair<int, int>> result = b.getEmptyCells();
+
+    EXPECT_EQ(result.size(), 2);
+    EXPECT_EQ(result, expected);
+}
+
+TEST(BoardTest, ResetClearsBoard) {
+    Board b(3, 3);
+    b.setdata(0, 0, 'X');
+    b.setdata(1, 1, 'O');
+    b.reset();
+
+    for (int i = 0; i < b.getRowCount(); ++i)
+        for (int j = 0; j < b.getColCount(); ++j)
+            EXPECT_TRUE(b.isCellEmpty(i, j));
+}
+
+TEST(BoardTest, ResizeBoardWorksCorrectly) {
+    Board b(2, 2);
+    b.resizeBoard(4, 5);
+    EXPECT_EQ(b.getRowCount(), 4);
+    EXPECT_EQ(b.getColCount(), 5);
+
+    for (int i = 0; i < b.getRowCount(); ++i)
+        for (int j = 0; j < b.getColCount(); ++j)
+            EXPECT_TRUE(b.isCellEmpty(i, j));
+}
+
+TEST(BoardTest, ResizeBoardInvalidThrows) {
+    Board b(2, 2);
+    EXPECT_THROW(b.resizeBoard(0, 5), invalid_argument);
+    EXPECT_THROW(b.resizeBoard(3, -1), invalid_argument);
+}
+
+TEST(BoardTest, BoardIsFullDetection) {
     Board b(2, 2);
     b.setdata(0, 0, 'X');
     b.setdata(0, 1, 'O');
     b.setdata(1, 0, 'X');
     b.setdata(1, 1, 'O');
-    if (b.isFull())
-        cout << "[T] Board full detection works" << endl;
-    else
-        cout << "[F] isFull failed" << endl;
+
+    EXPECT_TRUE(b.isFull());
 }
 
-void test_reset() {
+TEST(BoardTest, BoardIsNotFull) {
     Board b(2, 2);
     b.setdata(0, 0, 'X');
-    b.reset();
-    if (b.isCellEmpty(0, 0))
-        cout << "[T] Reset cleared the board" << endl;
-    else
-        cout << "[F] Reset failed" << endl;
+    EXPECT_FALSE(b.isFull());
 }
 
-void test_resize() {
+TEST(BoardTest, GetBoardSnapshotMatchesData) {
     Board b(2, 2);
-    b.resizeBoard(4, 4);
-    if (b.getRowCount() == 4 && b.getColCount() == 4)
-        cout << "[T] Resize successful" << endl;
-    else
-        cout << "[F] Resize failed" << endl;
-}
+    b.setdata(0, 0, 'X');
+    b.setdata(1, 1, 'O');
 
-int main() {
-    cout << "===== Running Board Tests =====\n" << endl;
-
-    test_initialization();
-    test_set_and_get();
-    test_isCellEmpty();
-    test_isFull();
-    test_reset();
-    test_resize();
-
-    cout << "\n===== Tests Finished =====" << endl;
-    return 0;
+    vector<vector<char>> snapshot = b.getBoardSnapshot();
+    EXPECT_EQ(snapshot[0][0], 'X');
+    EXPECT_EQ(snapshot[1][1], 'O');
+    EXPECT_EQ(snapshot[0][1], ' ');
+    EXPECT_EQ(snapshot[1][0], ' ');
 }

@@ -7,6 +7,11 @@ const vector<vector<char>>& Board::getdata() const
     return data;
 }
 
+vector<vector<char>> Board::getBoardSnapshot() const
+{
+    return data;
+}
+
 void Board::setdata(int r, int cl, char c) 
 {
     if (r < 0 || r >= row || cl < 0 || cl >= column || (c != 'X' && c != 'O')) {
@@ -20,12 +25,21 @@ bool Board::isCellEmpty(int r, int cl) const
     if (r < 0 || r >= row || cl < 0 || cl >= column) {
         throw invalid_argument("Invalid cell position.");
     }
-    return data[r][cl] == ' ';
+    if (data[r][cl] == ' ')
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 bool Board::isValidPosition(int r, int cl) const 
 {
-    return r >= 0 && r < row && cl >= 0 && cl < column;
+    if (r >= 0 && r < row && cl >= 0 && cl < column)
+    {
+        return true;
+    }
+    return false;
 }
 
 void Board::reset() 
@@ -70,6 +84,22 @@ int Board::getRowCount() const
 int Board::getColCount() const 
 {
     return column;
+}
+
+vector<pair<int, int>> Board::getEmptyCells() const
+{
+    vector<pair<int, int>> empty;
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < column; j++)
+        {
+            if (isCellEmpty(i, j))
+            {
+                empty.push_back({i, j});
+            }
+        }
+    }
+    return empty;
 }
 
 Board::~Board() {}
