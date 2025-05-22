@@ -19,6 +19,7 @@ string HumanPlayer::toString() const
     out << "Name: " << name << "\n"
         << "Type: " << type << "\n"
         << "Symbol: " << symbol << "\n"
+        << "Level: " << level << "\n"
         << "Games Played: " << num_played << "\n"
         << "Wins: " << num_win << "\n"
         << "Losses: " << num_lose;

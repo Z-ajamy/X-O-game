@@ -9,7 +9,7 @@ public:
     MockPlayer(const std::string& n, const std::string& t, int w, int l, int p, char s)
         : Player(n, t, w, l, p, s) {}
 
-        void makeMove(Move &move, Board &board) override
+        void makeMove(const Move &move, Board &board) override
         {
         // Mock implementation - do nothing
         }
