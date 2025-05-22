@@ -16,11 +16,9 @@ void movePlayerTest() {
     EXPECT_EQ(m.getplayer(), &p);
 }
 
-// تعريف الـ main الخاص بـ Google Test
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
-    // تسجيل الاختبارات
     testing::RegisterTest("MoveTests", "Position", nullptr, nullptr, __FILE__, __LINE__, []() -> testing::Test* {
         struct T : testing::Test {
             void TestBody() override {

@@ -12,6 +12,10 @@ public:
     void makeMove(Board&) override {
         // Mock implementation - do nothing
     }
+    string toString() const {
+        return "";
+    }
+
 };
 
 #endif

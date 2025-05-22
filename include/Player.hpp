@@ -23,6 +23,8 @@ public:
     virtual ~Player();
 
     virtual void makeMove(Board&) = 0;
+    virtual std::string toString() const = 0;
+
     
     // Getters
     string getName() const;

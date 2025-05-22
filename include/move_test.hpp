@@ -9,6 +9,10 @@ class DummyPlayer : public Player {
 public:
     DummyPlayer() : Player(name, type, 0, 0, 0, 'X') {}
     void makeMove(Board&) override {}
+    string toString() const {
+        return "";
+    }
+
 private:
     static std::string name;
     static std::string type;
