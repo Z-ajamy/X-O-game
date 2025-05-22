@@ -8,7 +8,7 @@
 class DummyPlayer : public Player {
 public:
     DummyPlayer() : Player(name, type, 0, 0, 0, 'X') {}
-    void makeMove(Board&) override {}
+    void makeMove(Move &move, Board &board) override{}
     string toString() const {
         return "";
     }
