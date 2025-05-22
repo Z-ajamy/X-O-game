@@ -1,7 +1,7 @@
 #include"../include/Move.hpp"
 
 
-Move::Move(Player *p, int r, int cl) : player(p), position({r, cl}) {}
+Move::Move(Player *p, int r, int cl) : player(p), position(r, cl) {}
 
 pair<int, int> Move::getPosition() const
 {

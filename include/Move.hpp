@@ -1,5 +1,7 @@
 #ifndef MOVE_HPP
 #define MOVE_HPP
+#include <utility>
+using namespace std;
 
 class Player; 
 
@@ -7,7 +9,7 @@ class Move
 {
 private:
     const Player *player;
-    pair<int, int> position({-1, -1});
+    pair<int, int> position;
 public:
     Move(Player *player ,int row, int column);
     ~Move();
