@@ -1,7 +1,7 @@
 #include"../include/Player.hpp"
 
 
-Player::Player(const string n, const string t, int w, int l, int p, char s) :
+Player::Player(const string &n, const string &t, int w, int l, int p, char s) :
 name(n), type(t), num_win(w), num_lose(l), num_played(p), symbol(s) {}
 
 string Player::getName() const
@@ -39,7 +39,7 @@ int Player::getLevel() const
     return level;
 }
 
-int Player::getconsecutiveWins() const
+int Player::getConsecutiveWins() const
 {
     return consecutiveWins;
 }
@@ -57,7 +57,14 @@ void Player::setType(const string& newType)
 
 void Player::setSymbol(char s)
 {
-    symbol = s;
+    if (s == 'X' || s == 'O') 
+    {
+        symbol = s;
+    } 
+    else 
+    {
+        throw invalid_argument("Invalid symbol. Only 'X' or 'O' are allowed.");
+    }
 }
 
 void Player::setLevel(int l)
@@ -89,6 +96,7 @@ void Player::resetProgress()
 {
     num_played = 0;
     num_win = 0;
+    num_lose = 0;
     consecutiveWins = 0;
     level = 1; 
 }

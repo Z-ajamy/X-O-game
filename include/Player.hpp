@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <string>
+#include <stdexcept>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ private:
     int level = 1;
     int consecutiveWins = 0;
 public:
-    Player(string n, string t, int w, int l, int p, char s);
+    Player(const string &n, const string &t, int w, int l, int p, char s);
     virtual ~Player();
 
     virtual void makeMove(Board&) = 0;
@@ -30,12 +31,16 @@ public:
     int getNumLose() const;
     int getNumPlayed() const;
     char getSymbol() const;
-    int getlevel() const;
+    int getLevel() const;
+    int getConsecutiveWins() const;
+
 
     // Setters
     void setName(const string& newName);
     void setType(const string& newType);
     void setSymbol(char s);
+    void setLevel(int l);
+
 
     void updateStats(bool win);
     void resetProgress();
